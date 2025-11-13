@@ -206,4 +206,166 @@ export class CanvasService {
     if (!this.canvas) return '';
     return this.canvas.toSVG();
   }
+
+  /**
+   * Met à jour la position d'un objet
+   */
+  updateObjectPosition(x: number, y: number): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject) return;
+
+    activeObject.set({ left: x, top: y });
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour les dimensions d'un objet
+   */
+  updateObjectSize(width: number, height: number): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject) return;
+
+    activeObject.set({ 
+      width: width,
+      height: height,
+      scaleX: 1,
+      scaleY: 1
+    });
+    activeObject.setCoords();
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour la couleur de remplissage d'un objet
+   */
+  updateObjectFill(color: string): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject) return;
+
+    activeObject.set({ fill: color });
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour la couleur de bordure d'un objet
+   */
+  updateObjectStroke(color: string): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject) return;
+
+    activeObject.set({ stroke: color });
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour l'épaisseur de bordure d'un objet
+   */
+  updateObjectStrokeWidth(width: number): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject) return;
+
+    activeObject.set({ strokeWidth: width });
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour l'opacité d'un objet
+   */
+  updateObjectOpacity(opacity: number): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject) return;
+
+    activeObject.set({ opacity: opacity / 100 });
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour la rotation d'un objet
+   */
+  updateObjectRotation(angle: number): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject) return;
+
+    activeObject.set({ angle: angle });
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour la police d'un objet texte
+   */
+  updateObjectFontFamily(fontFamily: string): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject || activeObject.type !== 'text') return;
+
+    activeObject.set({ fontFamily: fontFamily });
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour la taille de police d'un objet texte
+   */
+  updateObjectFontSize(fontSize: number): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject || activeObject.type !== 'text') return;
+
+    activeObject.set({ fontSize: fontSize });
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour le style gras d'un objet texte
+   */
+  updateObjectFontWeight(isBold: boolean): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject || activeObject.type !== 'text') return;
+
+    activeObject.set({ fontWeight: isBold ? 'bold' : 'normal' });
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour le style italique d'un objet texte
+   */
+  updateObjectFontStyle(isItalic: boolean): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject || activeObject.type !== 'text') return;
+
+    activeObject.set({ fontStyle: isItalic ? 'italic' : 'normal' });
+    this.canvas.renderAll();
+  }
+
+  /**
+   * Met à jour l'alignement du texte
+   */
+  updateObjectTextAlign(align: 'left' | 'center' | 'right'): void {
+    if (!this.canvas) return;
+    
+    const activeObject = this.canvas.getActiveObject();
+    if (!activeObject || activeObject.type !== 'text') return;
+
+    activeObject.set({ textAlign: align });
+    this.canvas.renderAll();
+  }
 }
