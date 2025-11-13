@@ -1,11 +1,18 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { EditorComponent } from './features/editor/editor.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.html',
-  styleUrl: './app.scss'
+  imports: [EditorComponent],
+  template: `<app-editor />`,
+  styleUrl: './app.scss',
+  styles: [`
+    :host {
+      display: flex;
+      width: 100%;
+      height: 100vh;
+    }
+  `]
 })
 export class App {
   protected readonly title = signal('clonic');
