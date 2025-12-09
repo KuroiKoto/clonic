@@ -140,6 +140,20 @@ import { CanvasService } from '../../../../core/services/canvas.service';
               </div>
             </div>
           </div>
+
+          <!-- Code CSS -->
+          <div class="property-section compact css-section">
+            <div class="css-header">
+              <h4>Code CSS</h4>
+              <button class="copy-button" (click)="copyCssToClipboard()" title="Copier">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+              </button>
+            </div>
+            <pre class="css-code">{{ getCssCode() }}</pre>
+          </div>
         } @else {
           <div class="empty-state">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -455,6 +469,80 @@ import { CanvasService } from '../../../../core/services/canvas.service';
       font-family: 'Courier New', monospace;
     }
 
+    /* Section CSS */
+    .css-section {
+      background: #1e1e1e;
+      border-color: #2d2d2d;
+    }
+
+    .css-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .css-section h4 {
+      color: #9ca3af;
+      margin: 0;
+    }
+
+    .copy-button {
+      padding: 4px 8px;
+      background: #2d2d2d;
+      border: 1px solid #404040;
+      border-radius: 4px;
+      color: #9ca3af;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      transition: all 0.2s;
+    }
+
+    .copy-button:hover {
+      background: #3d3d3d;
+      border-color: #4f46e5;
+      color: #4f46e5;
+    }
+
+    .copy-button svg {
+      stroke: currentColor;
+    }
+
+    .css-code {
+      margin: 0;
+      padding: 10px;
+      background: #0d0d0d;
+      border: 1px solid #2d2d2d;
+      border-radius: 6px;
+      font-family: 'Courier New', Monaco, monospace;
+      font-size: 11px;
+      line-height: 1.6;
+      color: #e5e7eb;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .css-code::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .css-code::-webkit-scrollbar-track {
+      background: #1e1e1e;
+      border-radius: 3px;
+    }
+
+    .css-code::-webkit-scrollbar-thumb {
+      background: #404040;
+      border-radius: 3px;
+    }
+
+    .css-code::-webkit-scrollbar-thumb:hover {
+      background: #4f46e5;
+    }
+
     .empty-state {
       display: flex;
       flex-direction: column;
@@ -574,6 +662,76 @@ export class PropertiesPanelComponent {
       case 'circle': return 'Cercle';
       case 'text': return 'Texte';
       default: return 'Objet';
+    }
+  }
+
+  protected getCssCode(): string {
+    const objects = this.selectedObjects();
+    if (objects.length === 0) return '';
+
+    const obj = objects[0] as any;
+    const type = obj?.type;
+    const width = Math.round(obj?.width ?? 0);
+    const height = Math.round(obj?.height ?? 0);
+    const fill = obj?.fill ?? '#000000';
+    const stroke = obj?.stroke ?? 'transparent';
+    const strokeWidth = obj?.strokeWidth ?? 0;
+    const opacity = (obj?.opacity ?? 1);
+    const rotation = Math.round(obj?.angle ?? 0);
+
+    let css = '';
+
+    if (type === 'rect') {
+      css = `.rectangle {
+  width: ${width}px;
+  height: ${height}px;
+  background-color: ${fill};
+  border: ${strokeWidth}px solid ${stroke};
+  opacity: ${opacity};
+  transform: rotate(${rotation}deg);
+}`;
+    } else if (type === 'circle') {
+      const radius = Math.round(width / 2);
+      css = `.circle {
+  width: ${width}px;
+  height: ${width}px;
+  background-color: ${fill};
+  border: ${strokeWidth}px solid ${stroke};
+  border-radius: 50%;
+  opacity: ${opacity};
+  transform: rotate(${rotation}deg);
+}`;
+    } else if (type === 'text') {
+      const fontSize = obj?.fontSize ?? 20;
+      const fontFamily = obj?.fontFamily ?? 'Arial';
+      const fontWeight = obj?.fontWeight ?? 'normal';
+      const fontStyle = obj?.fontStyle ?? 'normal';
+      const textAlign = obj?.textAlign ?? 'left';
+      
+      css = `.text {
+  font-size: ${fontSize}px;
+  font-family: ${fontFamily};
+  font-weight: ${fontWeight};
+  font-style: ${fontStyle};
+  text-align: ${textAlign};
+  color: ${fill};
+  opacity: ${opacity};
+  transform: rotate(${rotation}deg);
+}`;
+    }
+
+    return css;
+  }
+
+  protected copyCssToClipboard(): void {
+    const cssCode = this.getCssCode();
+    if (cssCode) {
+      navigator.clipboard.writeText(cssCode).then(() => {
+        // Optionnel: afficher une notification de succès
+        console.log('Code CSS copié dans le presse-papier !');
+      }).catch(err => {
+        console.error('Erreur lors de la copie:', err);
+      });
     }
   }
 

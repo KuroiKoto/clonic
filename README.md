@@ -2,6 +2,21 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.7.
 
+A design editor application built with Angular and Fabric.js that allows you to create and manipulate design objects on a canvas.
+
+## Features
+
+- **Canvas Editor**: Create and manipulate shapes (rectangles, circles, text)
+- **Project Management**: Save and restore projects in JSON format
+  - Create new projects
+  - Save projects to JSON files
+  - Load projects from JSON files
+  - Keyboard shortcut: `Ctrl+S` (or `Cmd+S` on Mac) to save
+- **History Management**: Undo/redo functionality
+- **Properties Panel**: Edit object properties (position, size, colors, opacity, rotation)
+- **Layers Panel**: View and manage canvas objects
+- **Zoom Controls**: Zoom in/out of the canvas
+
 ## Development server
 
 To start a local development server, run:
